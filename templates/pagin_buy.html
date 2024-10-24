@@ -1,0 +1,96 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Список Покупателей</h1>-->
+<!--    <ul>-->
+<!--        {% for post in page_obj %}-->
+<!--            <li>-->
+<!--                {{ post.name }} ({{ post.age }} лет)-->
+<!--                <p>Баланс: {{ post.balance }}</p>-->
+<!--            </li>-->
+<!--        {% empty %}-->
+<!--            <p>Нет постов.</p>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+<!--    &lt;!&ndash; показываем пагинатор &ndash;&gt;-->
+<!--    <div class="pagination">-->
+<!--        <p>Страницы:</p>-->
+<!--        <ul>-->
+<!--            {% if page_obj.has_previous %}-->
+<!--                <li><a href="?page=1"><<</a></li>-->
+<!--                <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>-->
+<!--            {% endif %}-->
+<!--            <li>{{ page_obj.number }}/{{ paginator.num_pages }}</li>-->
+<!--            {% if page_obj.has_next %}-->
+<!--                <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>-->
+<!--                <li><a href="?page={{ paginator.num_pages }}">>>></a></li>-->
+<!--            {% endif %}-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список Покупателей</title>
+    <style>
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .items-per-page {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список Покупателей</h1>
+
+    <div class="items-per-page">
+        <form method="get">
+            <label for="items_per_page">Элементы на странице:</label>
+            <select name="items_per_page" id="items_per_page" onchange="this.form.submit()">
+                <option value="3" {% if items_per_page == 3 %}selected{% endif %}>3</option>
+                <option value="5" {% if items_per_page == 5 %}selected{% endif %}>5</option>
+                <option value="10" {% if items_per_page == 10 %}selected{% endif %}>10</option>
+            </select>
+        </form>
+    </div>
+
+    <ul>
+        {% for post in page_obj %}
+            <li>
+                {{ post.name }} ({{ post.age }} лет)
+                <p>Баланс: {{ post.balance }}</p>
+            </li>
+        {% empty %}
+            <p>Нет постов.</p>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        <p>Страницы:</p>
+        <ul>
+            {% if page_obj.has_previous %}
+                <li><a href="?page=1&items_per_page={{ items_per_page }}"><<</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}&items_per_page={{ items_per_page }}">Previous</a></li>
+            {% endif %}
+            <li>{{ page_obj.number }}/{{ paginator.num_pages }}</li>
+            {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}&items_per_page={{ items_per_page }}">Next</a></li>
+                <li><a href="?page={{ paginator.num_pages }}&items_per_page={{ items_per_page }}">>>></a></li>
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>
